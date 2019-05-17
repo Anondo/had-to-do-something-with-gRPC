@@ -5,12 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"gopkg.in/mgo.v2/bson"
-
-	pb "emprpc/employee"
 )
 
 // MCfg contains the configs for the mongodb
@@ -35,20 +31,15 @@ func Init() {
 		log.Fatal("Failed to connect to mongodb: ", err.Error())
 	}
 	mgo.MClient = mc
+	mgo.MClient.Database(mgo.DB).Collection("employee")
 }
 
-// GetDB returns the mongodb config instance
-func GetDB() *MCfg {
+// GetDB returns the mongodb database instance
+func GetDB() *mongo.Database {
+	return mgo.MClient.Database(mgo.DB)
+}
+
+// GetDBConfig returns the config instance for the mongodb
+func GetDBConfig() *MCfg {
 	return mgo
-}
-
-// GetEmployee returns a document from the employee collection
-func (m *MCfg) GetEmployee(f bson.M, emp *pb.Employee) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-	if err := m.MClient.Database(m.DB).Collection("employee").FindOne(ctx, f).Decode(&emp); err != nil {
-		return err
-	}
-	spew.Dump(emp)
-	return nil
 }

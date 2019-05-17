@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	clnt "emprpc/cmd/client"
+	srvr "emprpc/cmd/server"
 	"emprpc/db"
 	"log"
 
@@ -17,10 +19,11 @@ var (
 
 func init() {
 	db.Init()
-	RootCmd.AddCommand(serveCmd)
-	RootCmd.AddCommand(clientCmd)
+	RootCmd.AddCommand(srvr.ServeCmd)
+	RootCmd.AddCommand(clnt.ClientCmd)
 }
 
+// Execute executes the root command
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
 		log.Fatal(err.Error())

@@ -2,6 +2,12 @@ syntax = "proto3";
 
 service EmployeeService{
   rpc GetEmployee (EmployeeRequest) returns (Employee){}
+  rpc SetEmployee (Employee) returns (ResponseMessage){}
+}
+
+service DeptService{
+  rpc GetDept (DeptRequest) returns (Dept){}
+  rpc SetDept (Dept) returns (ResponseMessage){}
 }
 
 
@@ -20,4 +26,13 @@ message EmployeeRequest{
 message Dept{
   int32 id = 1;
   string name = 2;
+}
+
+message DeptRequest{
+  int32 id = 1;
+}
+
+
+message ResponseMessage{
+  string msg = 1;
 }
