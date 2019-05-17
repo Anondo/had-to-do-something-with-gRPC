@@ -16,6 +16,7 @@ const (
 )
 
 type empServer struct{}
+type deptServer struct{}
 
 func (e *empServer) GetEmployee(ctx context.Context, r *pb.EmployeeRequest) (*pb.Employee, error) {
 	mdb := db.GetDB()
@@ -50,6 +51,39 @@ func (e *empServer) SetEmployee(ctx context.Context, emp *pb.Employee) (*pb.Resp
 
 }
 
+func (e *deptServer) GetDept(ctx context.Context, r *pb.DeptRequest) (*pb.Dept, error) {
+	mdb := db.GetDB()
+
+	dept := pb.Dept{}
+
+	if err := mdb.Collection("department").FindOne(ctx, bson.M{"id": r.GetId()}).Decode(&dept); err != nil {
+		return nil, err
+	}
+
+	return &dept, nil
+}
+func (e *deptServer) SetDept(ctx context.Context, dept *pb.Dept) (*pb.ResponseMessage, error) {
+	rm := &pb.ResponseMessage{}
+	mdb := db.GetDB()
+
+	id, err := mdb.Collection("department").CountDocuments(ctx, bson.M{})
+	if err != nil {
+		rm.Msg = "Could not count the number of documents in the collection department: " + err.Error()
+		return rm, err
+	}
+
+	dept.Id = int32(id + 1)
+
+	if _, err := mdb.Collection("department").InsertOne(ctx, dept); err != nil {
+		rm.Msg = "Could not create department document: " + err.Error()
+		return rm, err
+	}
+
+	rm.Msg = "Successfully created department document"
+	return rm, nil
+
+}
+
 // StartServer starts the gRPC server
 func StartServer() error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
@@ -58,6 +92,7 @@ func StartServer() error {
 	}
 	srvr := grpc.NewServer()
 	pb.RegisterEmployeeServiceServer(srvr, &empServer{})
+	pb.RegisterDeptServiceServer(srvr, &deptServer{})
 
 	return srvr.Serve(lis)
 }

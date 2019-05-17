@@ -18,12 +18,12 @@ var (
 )
 
 func init() {
-	deptGetCmd.Flags().IntP("id", "i", 0, "The employee id")
-	viper.BindPFlag("id", deptGetCmd.Flags().Lookup("id"))
+	deptGetCmd.Flags().IntP("did", "i", 0, "The department id")
+	viper.BindPFlag("did", deptGetCmd.Flags().Lookup("did"))
 }
 
 func getDept(cmd *cobra.Command, args []string) {
-	id := viper.GetInt32("id")
+	id := viper.GetInt32("did")
 	if err := client.FetchDeptRequest(id); err != nil {
 		log.Fatal(err.Error())
 	}

@@ -18,12 +18,12 @@ var (
 )
 
 func init() {
-	empGetCmd.Flags().IntP("id", "i", 0, "The employee id")
-	viper.BindPFlag("id", empGetCmd.Flags().Lookup("id"))
+	empGetCmd.Flags().Int32P("eid", "e", 0, "The employee id")
+	viper.BindPFlag("eid", empGetCmd.Flags().Lookup("eid"))
 }
 
 func getEmp(cmd *cobra.Command, args []string) {
-	id := viper.GetInt32("id")
+	id := viper.GetInt32("eid")
 	if err := client.FetchEmpRequest(id); err != nil {
 		log.Fatal(err.Error())
 	}
