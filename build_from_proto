@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# build source file from proto for golang
+protoc -I ./protos/ ./protos/employee.proto --go_out=plugins=grpc:./server/employee/
+
+# build source file from proto for python
+python -m grpc_tools.protoc -I ./protos/ --python_out=./client/ --grpc_python_out=./client/ ./protos/employee.proto 

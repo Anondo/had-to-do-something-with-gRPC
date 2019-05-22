@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+service EmployeeService{
+  rpc GetEmployee (EmployeeRequest) returns (Employee){}
+  rpc GetEmployeeList (Nothing) returns (stream Employee){}
+  rpc SetEmployee (Employee) returns (ResponseMessage){}
+  rpc DeleteEmployee (EmployeeRequest) returns (ResponseMessage){}
+  rpc UpdateEmployee (EmployeeUpdateRequest) returns (ResponseMessage){}
+}
+
+service DeptService{
+  rpc GetDept (DeptRequest) returns (Dept){}
+  rpc GetDeptList (Nothing) returns (stream Dept){}
+  rpc SetDept (Dept) returns (ResponseMessage){}
+  rpc DeleteDepartment (DeptRequest) returns (ResponseMessage){}
+  rpc UpdateDepartment (DeptUpdateRequest) returns (ResponseMessage){}
+}
+
+message Nothing{}
+
+
+message Employee{
+  int32 id = 1;
+  string name  = 2;
+  string designation = 3;
+  float salary = 4;
+  Dept department = 5;
+}
+
+message EmployeeRequest{
+  int32 id = 1;
+}
+
+message EmployeeUpdateRequest{
+  int32 id = 1;
+  Employee emp = 2;
+}
+
+message Dept{
+  int32 id = 1;
+  string name = 2;
+}
+
+message DeptRequest{
+  int32 id = 1;
+}
+
+message DeptUpdateRequest{
+  int32 id = 1;
+  Dept department = 2;
+}
+
+
+message ResponseMessage{
+  string msg = 1;
+}
