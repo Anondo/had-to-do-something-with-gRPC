@@ -1,7 +1,7 @@
 ## Why
 
 With http being the most common approach for building APIs, [gRPC](https://grpc.io/) is getting famous. So had to do something
-with gRPC. Would have felt better if this something for useful. Thats a thing for the future i guess.<br>
+with gRPC. Would have felt better if this was something more useful. Thats a thing for the future i guess.<br>
 
 The ```server``` is written in golang & is utterly a simple **Employee Information System**. The ```rpc``` procedures are mostly
 to create , read , update & delete an employee document & also their departments.<br>
